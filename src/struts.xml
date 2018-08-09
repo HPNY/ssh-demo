@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+	<constant name="struts.enable.DynamicMethodInvocation"
+		value="true" />
+	<constant name="struts.devMode" value="true" />
+	<!-- 配置文件修改了，不需要重启服务器 -->
+	<constant name="struts.configuration.xml.reload" value="true" />
+	<!-- jsp中不使用struts的样式 -->
+	<constant name="struts.ui.theme" value="simple" />
+	<!-- Action所在的包的后缀 -->
+	<constant name="struts.convention.package.locators"
+		value="action,actions,controller,struts,struts2" />
+
+	<package name="fund" namespace="/fund" extends="struts-default">
+		<!-- 动态方法调用测试 -->
+		<action name="fundAction"
+			class="com.mybank.fundtrans.controller.FundAction">
+			<result name="login">/login.jsp</result>
+			<result name="index" type="redirect">/index.jsp</result>
+		</action>
+		<!-- 使用通配符简化配置 -->
+		<action name="*Fund"
+			class="com.mybank.fundtrans.controller.FundAction" method="{1}">
+			<result name="success" type="chain">findAllFund</result>
+			<result name="update">/fund/fund_update.jsp</result>
+			<result name="showFunds">/fund/fund_list.jsp</result>
+		</action>
+		<!-- 用于链接请求 -->
+
+		<action name="*">
+			<result name="success">/fund/{1}.jsp</result>
+		</action>
+	</package>
+
+	<!-- Add packages here -->
+	<package name="client" namespace="/client"
+		extends="struts-default">
+		<action name="clientAction"
+			class="com.mybank.fundtrans.controller.ClientAction">
+			<result name="login">/login.jsp</result>
+			<result name="index" type="redirect">/index.jsp</result>
+		</action>
+		<!-- 使用通配符简化配置 -->
+		<action name="*Client"
+			class="com.mybank.fundtrans.controller.ClientAction" method="{1}">
+			<result name="update">/client/client_update.jsp</result>
+			<result name="success" type="chain">findAllClient</result>
+			<result name="showClients">/client/client_list.jsp</result>
+		</action>
+		<!-- 用于链接请求 -->
+
+		<action name="*">
+			<result name="success">/client/{1}.jsp</result>
+		</action>
+	</package>
+
+	<!-- Add packages here -->
+</struts>
